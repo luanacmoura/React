@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Svigufo - Eventos públicos e privados</title>
+    <!-- Estilos -->
+    <link rel="stylesheet" href="./assets/css/flexbox.css" />
+    <link rel="stylesheet" href="./assets/css/reset.css" />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+
+    <!-- Fontes -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Raleway"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+      integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+      crossorigin="anonymous"
+    />
+  </head>
+
+  <body>
+    <div>
+      <header class="cabecalhoPrincipal">
+        <div class="container">
+          <img src="./assets/img/icon-login.png" />
+
+          <nav class="cabecalhoPrincipal-nav">
+            Administrador
+          </nav>
+        </div>
+      </header>
+
+      <main class="conteudoPrincipal">
+        <section class="conteudoPrincipal-cadastro">
+          <h1 class="conteudoPrincipal-cadastro-titulo">Tipos de Eventos</h1>
+          <div class="container" id="conteudoPrincipal-lista">
+            <table id="tabela-lista">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Título</th>
+                  <!-- <th>Ação</th> -->
+                </tr>
+              </thead>
+
+              <tbody id="tabela-lista-corpo"></tbody>
+            </table>
+          </div>
+
+          <div class="container" id="conteudoPrincipal-cadastro">
+            <h2 class="conteudoPrincipal-cadastro-titulo">
+              Cadastrar Tipo de Evento
+            </h2>
+            <form method="POST" id="form">
+              <div class="container">
+                <input
+                  type="text"
+                  id="nome-tipo-evento"
+                  placeholder="tipo do evento"
+                />
+                <button
+                  class="conteudoPrincipal-btn conteudoPrincipal-btn-cadastro"
+                >
+                  Cadastrar
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+      </main>
+
+      <footer class="rodapePrincipal">
+        <section class="rodapePrincipal-patrocinadores">
+          <div class="container">
+            <p>Escola SENAI de Informática - 2019</p>
+          </div>
+        </section>
+      </footer>
+    </div>
+
+    <script>
+        // let tiposEventos = [
+        //   { "id": 4, "nome": "Joana D'Arc"},
+        //   {"id": 3, "nome": "Linkedin"},
+        //   { "id": 1, "nome": "Outro Evento"},
+        //   { "id": 2, "nome": "Web Design"}];
+
+        let tiposEventos = [];
+        //   let tabela = document.querySelector("#tabela-lista-corpo");
+        // console.log(tiposEventos);
+
+        //para cada item do array
+        // tiposEventos.forEach(element => {
+        //   criar uma linha
+        //   let novalinha = document.createElement("tr"); //entre parênteses temos o tipo de elemento  
+          
+        //   incluir as colunas
+        //   let colunaId = document.createElement("td");          
+        //   inserindo valor do array na coluna
+        //   colunaId.innerText = element.id;
+
+        //   incluindo outra coluna
+        //   let colunaNome = document.createElement("td");
+        //   inserindo valor do array na coluna
+        //   colunaNome.innerHTML = "<a>" + element.nome + "</a>"; //para usar html, eu poderia inclusive adicionar uma classe especifica só nesse item
+
+        //   inserindo as colunas na linha criada
+        //   novalinha.appendChild(colunaId); //appendchild acrescenta, append substitui tudo o que há na tabela
+        //   novalinha.appendChild(colunaNome);
+
+        //   inserindo a linha criada na tabela ja existente
+        //   tabela.appendChild(novalinha); 
+        // });
+
+        //-------------------------------------------------------------------------------------------
+        //criando funções
+        // function sucesso() {
+        //   var data = JSON.parse(this.responseText); //corresponde ao body, ao retorno da requisição (pensa no json do postman)
+        //   console.log(data);
+        //   preencherTabela(data);
+        // };
+
+        // function erro(err) {
+        //   console.log("Ocorreu um erro: ", err);
+        // };
+        
+        // var xhr = new XMLHttpRequest();
+        // xhr.onload = sucesso; //sucesso
+        // xhr.onerror = erro; //erro
+
+       
+        // //url + verbo + envio da requisição
+        // xhr.open("GET", "http://192.168.4.112:5000/api/tiposeventos");
+        // xhr.send();
+        //-----------------------------------------------------------------------------------------------
+        const url = "http://192.168.4.112:5000/api/tiposeventos";
+        let tabela = document.querySelector("#tabela-lista-corpo");
+        
+        function carregaListaTiposEventos() {
+          fetch (url) 
+          .then(resposta => resposta.json()) //recebendo o json
+          .then(data => preencherTabela(data)) //pegando os dados e preenchendo a tabela 
+          .catch(erro => console.error('error', erro));         
+        }
+
+        function preencherTabela(tiposEventos) {
+          tabela.innerText = "";
+          tiposEventos.forEach(element => {
+            //criar uma linha
+            let novalinha = document.createElement("tr"); //entre parênteses temos o tipo de elemento  
+            
+            //incluir as colunas
+            let colunaId = document.createElement("td");          
+            //inserindo valor do array na coluna
+            colunaId.innerText = element.id;
+
+            //incluindo outra coluna
+            let colunaNome = document.createElement("td");
+            //inserindo valor do array na coluna
+            colunaNome.innerHTML = "<a>" + element.nome + "</a>"; //para usar html, eu poderia inclusive adicionar uma classe especifica só nesse item
+
+            //inserindo as colunas na linha criada
+            novalinha.appendChild(colunaId); //appendchild acrescenta, append substitui tudo o que há na tabela
+            novalinha.appendChild(colunaNome);
+
+            //inserindo a linha criada na tabela ja existente
+            tabela.appendChild(novalinha); 
+          });
+        }
+        //----------------------------------------------------------------------------------------------
+        let form = document.querySelector("#form");
+
+        form.addEventListener("submit", function(event) {
+          event.preventDefault(); //prevenir que o formulário apague automaticamente
+
+          let objetoTipoEvento = {
+            nome : document.querySelector("#nome-tipo-evento").value
+          } 
+
+          fetch(url, {
+            method : "POST", //verbo
+            body : JSON.stringify(objetoTipoEvento), //objeto que quero enviar, preciso converter pra json 
+            headers : {
+              "Content-Type" : "application/json"} //pode olhar no header do postman pra ter certeza do que vamos enviar
+          }) //por padrão o fetch é get, precisamos determinar qual o verbo dele
+            .then(resposta => console.log(resposta)) //não funcionou com json pq no backend estou mandando somente Ok()
+            .then(data => carregaListaTiposEventos()) //pra atualizar a pagina
+            .catch(erro => console.log('Erro:', erro));
+
+        });
+
+    </script>
+
+  </body>
+</html>
